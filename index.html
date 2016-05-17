@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Managing OS Provided PostgreSQL Packages</title>
+
+        <meta name="description" content="Managing OS Provided PostgreSQL Packages">
+        <meta name="author" content="Keith Fiske">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="css/reveal.min.css">
+        <link rel="stylesheet" href="css/theme/omniti.css" id="theme">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+        <script>
+            if( window.location.search.match( /print-pdf/gi ) ) {
+                var link = document.createElement( 'link' );
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = 'css/print/pdf.css';
+                document.getElementsByTagName( 'head' )[0].appendChild( link );
+            }
+        </script>
+
+        <style>
+            #li30 li { line-height:30px }
+        </style>
+
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Managing OS Provied<br>PostgreSQL Packages</h2>
+                    <p>
+                        <small>Presented by <a href="http://keithf4.com" target="_blank">Keith Fiske</a> / <a href="http://twitter.com/keithf4" target="_blank">@keithf4</a></small>
+                    </p>
+                    <p>
+                    <small>Database Administrator @ <a href="http://www.omniti.com" target="_blank">OmniTI</a></small>
+                    </p>
+                    <p>
+                    <br/>
+                    <br/>
+                    <small>Follow along at <br/><a href="http://slides.keithf4.com/dontforget">http://slides.keithf4.com/managing_pg_packages</a></small>
+                    </p>
+                </section>
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>OmniTI, Inc</h2>
+                    <p>
+                        <ul>
+                            <li>Full-stack support for high-traffic websites & applications</li>
+                            <ul>
+                                <li>Millions+ of users</li>
+                                <li>Terabytes+ of data</li>
+                                <li>Gilt, Etsy, Ora.TV, Freelotto</li>
+                            </ul>
+                            <li>Surge Conference</li>
+                            <ul>
+                                <li> <a href="http://omniti.com/surge">http://surge.omniti.com</a></li>
+                                <li>Annually in Sept</li>
+                            </ul>
+                            <li>We're hiring!</li>
+                            <ul>
+                                <li><a href="http://omniti.com/is/hiring">http://omniti.com/is/hiring</a></li>
+                                <li>SysAdmins, DBAs, Developers, Kernel Hackers</li>
+                        </ul>
+                    </p>
+
+                </section>
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Start here...</h2>
+
+                    <p><a href="http://www.postgresql.org/download/" target="_blank">http://www.postgresql.org/download/</a></p>
+                    <ul>
+                        <li>Binary Packages</li>
+                        <li>Source Code</li>
+                        <li>Live CDs</li>
+                        <li>Application Suites</li>
+                    </ul>
+                </section>
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h1>The Debian Way</h1>
+                    <p>Debian 8.4.0 64-bit</p>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Repository</h2>
+                    <ul>
+                        <li>Default OS package is rarely the most current</li>
+                        <li><a href="http://apt.postgresql.org" target="_blank">http://apt.postgresql.org</a> (redirects to wiki page)</li>
+                        <li>Up to date packages (9.1 - 9.5) for currently supported releases of Debian & Ubuntu</li>
+                        <li>Also includes some third-party applications (pgadmin, pgbouncer, pgpool, etc)</li>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Packages</h2>
+                    <ul>
+                        <li>postgresql-9.5 - main server package</li>
+                        <li>postgresql-client-9.5 - client only</li>
+                        <li>postgresql-contrib-9.5 - core contrib modules</li>
+                        <li>postgresql-server-dev-9.5 - development header files and libraries</li>
+                        <li>postgresql-doc-9.5 - documentation</li>
+                        <li>postgresql-common - cluster management</li>
+                        <li>libpq5 - library files for using PG C libraries</li>
+                    </ul>
+                    <br><br>Installing main server package will set up default instance
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>File Locations</h2>
+                    <ul>
+                        <li>Data directory - /var/lib/postgresql/9.5/&lt;cluster_name&gt;</li>
+                        <li>Config files - /etc/postgresql/9.5/&lt;cluster_name&gt;</li>
+                        <li>Binaries - /usr/lib/postgresql/9.5/bin</li>
+                        <li>Libraries - /usr/lib/postgresql/9.5/lib</li>
+                        <li>Shared (extensions) - /usr/share/postgresql/9.5</li>
+                        <li>Logs - /var/log/postgresql/postgresql-9.5-&lt;cluster_name&gt;.log</li>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Automatic Startup</h2>
+                    <ul>
+                        <li>Inside config directory, each instance has a start.conf</li>
+                        <li>Only contains a single value</li>
+                        <ul>
+                            <li>auto (default) - automatically start/stop this instance along with system</li>
+                            <li>manual - only start this instance manually (using pg_ctlcluster or systemd)</li>
+                            <li>disabled - do not allow startup with pg_ctlcluster (can be easily bypassed with pg_ctl</li>
+                        </ul>
+                    </ul>
+                </section>
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Default users & access</h2>
+                    <ul>
+                        <li>System User - postgres</li>
+                        <li>Roles - postgres (superuser)</li>
+                        <pre><code data-trim>
+# "local" is for Unix domain socket connections only
+local   all             all                                     peer
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+                        </code></pre>
+                        <li>By default, only local system users can log in with no password and if matching db role exists</li>
+                        <li>By default, all newly created roles connecting via local tcp must use password auth</li>
+                        <li>All other access must be set up manually</li>
+                        <li>Default is to only allow local tcp connections</li>
+                        <pre><code data-trim>
+#listen_addresses = 'localhost'
+                        </code></pre>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Cluster Management <br>(wrapper scripts)</h2>
+                    <ul id="li30" style="font-size:25px;">
+                        <li><b><i>pg_createcluster</i></b> - replacement for initdb</li>
+                        <ul>
+                            <li>Automatically creates new data directories and sets unique port</li>
+                            <li>Easily supports multiple, major versions simultaneously</li>
+                        </ul>
+                        <li><b><i>pg_ctlcluster</i></b> - replacement for pg_ctl</li>
+                        <li><b><i>pg_upgradecluster</i></b> - replacement for pg_upgrade</li>
+                        <ul>
+                            <li>Works great if everything "just works". Obfuscates issues when it doesn't.</li>
+                            <li>Avoid and use pg_upgrade directly</li>
+                            <li>Use pg_createcluster to manually make new instances</li>
+                            <li>Manually edit ports to swap old/new version clusters around</li>
+                        </ul>
+                        <li><b><i>pg_lsclusters</i></b> - show all clusters managed</li>
+                        <li><b><i>pg_renamecluster</i></b> - rename debian managed cluster</li>
+                        <li><b><i>psql</i></b> - wrapper for original psql set to current major version</li>
+                    </ul>
+                        <aside class="notes">
+                        <small>
+                            <ul>
+                                <li>create a cluster then run pg_lsclusters to show it's there.<li>
+                                <li>Install 9.4 server and show multiple major versions co-existing</li>
+                            </ul>
+                        </small>
+                        </aside>
+                </section>
+                
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>SystemD</h2>
+                    <ul>
+                        <li>Wrappers within wrappers</li>
+                        <li>SystemD is not aware of each cluster unless you use it to start the cluster</li>
+                        <pre><code data-trim>
+sudo systemctl start postgresql@9.5-main 
+sudo systemctl stop postgresql@9.5-main 
+                        </code></pre>
+                        <li>If you need to stop via a mode other than default, use pg_ctlcluster</li>
+                            <ul>
+                                <li>Default in 9.5: -m fast</li>
+                                <li>Default in &lt;= 9.4: -m smart</li>
+                                <pre><code data-trim>
+pg_ctlcluster 9.4 main stop -m fast
+                                </code></pre>
+                                <li>Just be sure to restart with systemd</li>
+                            </ul>
+                    </ul>
+                    <aside class="notes">
+                    <small>
+                        Do a demo of starting/stopping. Use "systemctl list-units | grep postgres" to show systemd awareness
+                    </small>
+                    </aside>
+                </section>
+                <!-- End Debian Section -->
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h1>The CentOS Way</h1>
+                    <p>CentOS 6.7 64-bit</p>
+                </section>
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Repository</h2>
+                    <ul>
+                        <li>Default OS package is 8.4 (EOL)</li>
+                        <li><a href="http://www.postgresql.org/download/linux/redhat/" target="_blank">http://www.postgresql.org/download/linux/redhat/</a> - General Instructions</li>
+                        <li><a href="http://yum.postgresql.org/repopackages.php" target="_blank">http://yum.postgresql.org/repopackages.php</a> - RPMs for many different RedHat flavors and all versions of Postgres (including EOL'd)</li>
+                        <li>Also includes some third-party applications similar to apt</li>
+                        <pre><code data-trim>
+sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
+                        </code></pre>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Packages</h2>
+                    <ul>
+                        <li>postgresql95 - client package</li>
+                        <li>postgresql95-server - main server package</li>
+                        <li>postgresql95-contrib - core contrib modules</li>
+                        <li>postgresql95-libs - shared libraries</li>
+                        <li>postgresql95-devel - development header files and libraries</li>
+                        <li>postgresql95-docs - documentation</li>
+                    </ul>
+                    <aside class="notes">
+                        <small>
+                            Package without the major version number is the OS default. Server installs client & libs.
+                        </small>
+                    </aside>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Setup</h2>
+                    <ul>
+                        <li>Default instance is not created upon server installation</li>
+                        <pre><code data-trim>
+sudo service postgresql-9.5 initdb
+chkconfig postgresql-9.5 on
+sudo service postgresql-9.5 start
+
+sudo service postgresql-9.5 stop -m fast
+                        </code></pre>
+                        <li>To create additional instances, use default initdb to designate new data directories</li>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>File Locations</h2>
+                    <ul>
+                        <li>Data directory - /var/lib/pgsql/9.5/data</li>
+                        <li>Config files - Contained in data directory</li>
+                        <li>Binaries - /usr/pgsql-9.5/bin</li>
+                        <li>Libraries - /usr/pgsql-9.5/lib</li>
+                        <li>Shared (extensions) - /usr/pgsql-9.5/lib</li>
+                        <li>Logs </li>
+                        <ul>
+                            <li>Database logs - pg_log in data directory</li>
+                            <li>Startup log - /var/lib/pgsql/9.5/pgstartup.log</li>
+                        </ul>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Default users & access</h2>
+                    <ul>
+                        <li>System User - postgres</li>
+                        <li>Roles - postgres (superuser)</li>
+                        <pre><code data-trim>
+# "local" is for Unix domain socket connections only
+local   all             all                                     ident
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            ident
+                        </code></pre>
+                        <li>By default, only local system users can log in with no password and if matching db role exists</li>
+                        <li>By default, for tcp connections, contact client ident server for for matching database role.</li>
+                        <li>All other access must be set up manually</li>
+                        <li>Default is to only allow local tcp connections</li>
+                        <pre><code data-trim>
+#listen_addresses = 'localhost'
+                        </code></pre>
+                       
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Service Management</h2>
+                    <ul id="li30" style="font-size:25px;">
+                        <li>Starting with 9.0, one cluster per major version supported. Previously, only single cluster supported.</li>
+                        <li>Each major version has its own init.d - /etc/init.d/postgresql-9.5</li>
+                        <li>Make copy(s) of default init.d for managing multiple clusters</li>
+                        <pre><code data-trim>
+PGVERSION=9.0.23
+PGMAJORVERSION=`echo "$PGVERSION" | sed 's/^\([0-9]*\.[0-9]*\).*$/\1/'`
+NAME=`basename $0`
+PGENGINE=/usr/pgsql-${PGMAJORVERSION}/bin
+PGPORT=5432
+PGDATA=/var/lib/pgsql/${PGMAJORVERSION}/data
+PGLOG=/var/lib/pgsql/${PGMAJORVERSION}/pgstartup.log
+lockfile="/var/lock/subsys/${NAME}.${PGPORT}"
+pidfile="/var/run/${NAME}.pid"
+                        </code></pre>
+                        <pre><code data-trim>
+# Override defaults from /etc/sysconfig/pgsql if file is present
+[ -f /etc/sysconfig/pgsql/${NAME} ] && . /etc/sysconfig/pgsql/${NAME}
+export PGDATA
+export PGPORT
+                        </code></pre>
+                    </ul>
+                </section>
+                <!-- end CentOS -->
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h1>The FreeBSD Way</h1>
+                    <p>FreeBSD 10.3 64-bit</p>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Repository</h2>
+                    <ul>
+                        <li>Binary Packages or Compiled Ports</li>
+                        <ul>
+                            <li><b><i>pkg</i></b> command for managing packages</li>
+                            <li><b><i>portmaster</i></b> is useful for managing ports</li>
+                        </ul>
+                        <li>Generally both kept up to date, but Ports usually ahead of Packages</li>
+                        <li>Either method is managed the same after install</li>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Packages</h2>
+                    <ul>
+                        <li>postgresql95-server - main server package</li>
+                        <li>postgresql95-client - client package</li>
+                        <li>postgresql95-contrib - core contrib modules</li>
+                        <li>postgresql95-docs - documentation</li>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Setup</h2>
+                    <ul>
+                        <li>Default instance is not created upon server installation</li>
+                        <li>Enable postgres in rc.conf</li>
+                        <pre><code data-trim>
+postgresql_enable="YES"
+                        </code></pre>
+                        <pre><code data-trim>
+sudo /usr/local/etc/rc.d/postgresql initdb
+sudo service postgresql start
+
+sudo service postgresql stop -m fast
+                        </code></pre>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>File Locations</h2>
+                    <ul>
+                        <li>Data directory - /usr/local/pgsql/data</li>
+                        <li>Config files - Contained in data directory</li>
+                        <li>Binaries - /usr/local/bin</li>
+                        <li>Libraries - /usr/local/lib/postgresql</li>
+                        <li>Shared (extensions) - /usr/local/share/postgresql</li>
+                        <li>Logs - syslog (recommend changing to pg_log)</li>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Default users & access</h2>
+                    <ul>
+                        <li>System User - pgsql</li>
+                        <li>Roles - pgsql (superuser)</li>
+                        <pre><code data-trim>
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            trust
+                        </code></pre>
+                        <li>By default, all local system users can log in with no password</li>
+                        <li>By default, all local tcp connections can log in with no password</li>
+                        <li>All other access must be set up manually</li>
+                        <li>Default is to only allow local tcp connections</li>
+                        <pre><code data-trim>
+#listen_addresses = 'localhost'
+                        </code></pre>
+                       
+                    </ul>
+                </section>
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Managing Multiple Versions & Upgrades</h2>
+                    <ul>
+                        <li>Multiple minor AND major version packages not supported at the same time. Installing a new packages will uninstall the old.</li>
+                        <li>Only supported upgrade is pg_dump -> shutdown -> install new packages -> pg_restore</li>
+                        <li>Recommend manual, source installation for high availability production systems.</li>
+                        <li>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Non-Default Data Location</h2>
+                    <ul>
+                        <li>If using packages, recommend NOT using service initdb (no version folder)</li>
+                        <li>Following file shows optional settings for rc.conf to control PostgreSQL service</li>
+                        <pre><code data-trim>
+/usr/ports/databases/postgresql94-server/files/README-server
+                        </code></pre>
+                        <pre><code data-trim>
+postgresql_data="/usr/local/pgsql/data/9.5"
+postgresql_flags="-w -s -m fast"
+postgresql_initdb_flags="--encoding=utf-8 --lc-collate=C"
+postgresql_class="default"
+postgresql_profiles=""
+                        </pre></code>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Running Multiple Instances</h2>
+                    <ul>
+                        <li>Similar to CentOS, make copies of /usr/local/etc/rc.d/postgresql file</li>
+                        <li>Replace data directory line</li>
+                        <pre><code data-trim>
+eval postgresql_data=${postgresql_data:-"~${postgresql_user}/data"}
+
+postgresql_data="/usr/local/pgsql/95/newdb"
+                        </code></pre>
+                        <li><a href="https://www.textplain.net/tutorials/2015/running-postgresql-in-freebsd-jails/" target="_blank">Running PostgreSQL in FreeBSD Jails</a></li>
+                </section>
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h1>Your Way!</h1>
+                    - Location in source for provide startup scripts (init.d, systemd, etc)
+                    - using symlinks from /opt
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Compile From Source</h2>
+                    <ul>
+                        <li>Debian Required Packages</li>
+                        <ul>
+                            <li>build-essential, libreadline-dev, zlib1g-dev</li>
+                        </ul>
+                        <li>CentOS Required Packages</li>
+                        <ul>
+                            <li>sudo yum groupinstall 'Development Tools'</li>
+                            <li>readline-devel, zlib-devel</li>
+                        </ul>
+                        <li>FreeBSD Required Packages</li>
+                        <ul>
+                            <li>gmake</li>
+                        </ul>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Service Scripts</h2>
+                    <ul>
+                        <li>Source provides several sample startup scripts in <b><i>../contrib/start-scripts/</i></b></li>
+                        <li>Linux, FreeBSD, OSX</li>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Install Location</h2>
+                    <ul>
+                        <li><b><i>/opt/pgsqlxx{x}</i></b></li>
+                        <ul>
+                            <li>Can do for each minor version, but then have to reinstall all extensions every patch</li>
+                        </ul>
+                        <li>Symlink general location to specific version</li>
+                        <pre><code data-trim>
+ln -s /opt/pgsql95 pgsql
+                        </code></pre>
+                        <li>Add <b><i>/opt/pgsql/bin</i></b> to PATH</li>
+                        <li>Data directory should be versioned, but version should be folder on mount point. Allows <i>pg_upgrade <b>--link</b></i></li>
+                        <pre><code data-trim>
+keith@server:~ % zfs list
+NAME                      USED  AVAIL  REFER  MOUNTPOINT
+tank                     2.60T   937G   144K  /tank
+tank/pgdata               396M   937G   280M  /tank/pgdata
+
+keith@server:/tank/pgdata % ls -l
+total 9
+drwx------  19 pgsql  pgsql  26 Apr 14 14:33 94
+drwx------   2 pgsql  pgsql   2 May 16 20:34 95
+                        </code></pre>
+
+                </section>
+
+
+                <section data-background="css/theme/omniti_bg_logo.png">
+
+                    <ul>
+                        <li>PostgreSQL Home Page - <a href="http://www.postgresql.org" target="_blank">postgresql.org</a></li>
+                        <li>Planet PostgreSQL Community News Feed - <a href="http://planet.postgresql.org" target="_blank">planet.postgresql.org</a></li>
+                        <li>PostgreSQL Extension Network - <a href="http://pgxn.org" target="_blank">pgxn.org</a></li>
+                        <li>OmniTI - <a href="http://www.omniti.com" target="_blank">omniti.com</a></li>
+                        <li>Me! - <a href="http://www.keithf4.com" target="_blank">keithf4.com</a> / <a href="http://twitter.com/keithf4" target="_blank">@keithf4</a></li> 
+                        <li>Make cool presentations like this - <a href="https://github.com/hakimel/reveal.js/" target="_blank">reveal.js</a></li>
+                    </ul>
+                </section>
+            </div> 
+
+
+        </div>
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                slideNumber: true,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Parallax scrolling
+                // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+                // parallaxBackgroundSize: '2100px 900px',
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { 
+                        hljs.configure({
+                                languages: 'sql'
+                                })
+                        hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
