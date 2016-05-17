@@ -407,19 +407,18 @@ host    all             all             127.0.0.1/32            trust
                 </section>
 
                 <section data-background="css/theme/omniti_bg_logo.png">
-                    <h2>Managing Multiple Versions & Upgrades</h2>
+                    <h2>Managing Multiple Versions<br> & Upgrades</h2>
                     <ul>
                         <li>Multiple minor AND major version packages not supported at the same time. Installing a new packages will uninstall the old.</li>
                         <li>Only supported upgrade is pg_dump -> shutdown -> install new packages -> pg_restore</li>
                         <li>Recommend manual, source installation for high availability production systems.</li>
-                        <li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Non-Default Data Location</h2>
                     <ul>
                         <li>If using packages, recommend NOT using service initdb (no version folder)</li>
-                        <li>Following file shows optional settings for rc.conf to control PostgreSQL service</li>
+                        <li>Following file shows optional settings for rc.conf to control main PostgreSQL service</li>
                         <pre><code data-trim>
 /usr/ports/databases/postgresql94-server/files/README-server
                         </code></pre>
@@ -430,16 +429,18 @@ postgresql_initdb_flags="--encoding=utf-8 --lc-collate=C"
 postgresql_class="default"
 postgresql_profiles=""
                         </pre></code>
+                        <li>Does not support multiple clusters on same machine</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Running Multiple Instances</h2>
                     <ul>
                         <li>Similar to CentOS, make copies of /usr/local/etc/rc.d/postgresql file</li>
-                        <li>Replace data directory line</li>
                         <pre><code data-trim>
+REPLACE:
 eval postgresql_data=${postgresql_data:-"~${postgresql_user}/data"}
 
+WITH:
 postgresql_data="/usr/local/pgsql/95/newdb"
                         </code></pre>
                         <li><a href="https://www.textplain.net/tutorials/2015/running-postgresql-in-freebsd-jails/" target="_blank">Running PostgreSQL in FreeBSD Jails</a></li>
@@ -447,8 +448,6 @@ postgresql_data="/usr/local/pgsql/95/newdb"
 
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h1>Your Way!</h1>
-                    - Location in source for provide startup scripts (init.d, systemd, etc)
-                    - using symlinks from /opt
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Compile From Source</h2>
@@ -471,13 +470,13 @@ postgresql_data="/usr/local/pgsql/95/newdb"
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Service Scripts</h2>
                     <ul>
-                        <li>Source provides several sample startup scripts in <b><i>../contrib/start-scripts/</i></b></li>
+                        <li>Source provides several sample startup scripts in <br><b><i>../contrib/start-scripts/</i></b></li>
                         <li>Linux, FreeBSD, OSX</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Install Location</h2>
-                    <ul>
+                    <ul id="li30" style="font-size:30px;">
                         <li><b><i>/opt/pgsqlxx{x}</i></b></li>
                         <ul>
                             <li>Can do for each minor version, but then have to reinstall all extensions every patch</li>
