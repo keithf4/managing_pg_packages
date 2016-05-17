@@ -124,6 +124,21 @@
                     <br><br>Installing main server package will set up default instance
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Version Pinning</h2>
+                    <ul>
+                        <li>Some non-versioned packages are associated with latest version installed</li>
+                        <li>If 9.4 & 9.5 are installed, <b><i>common</i></b> & <b><i>libpq5</i></b> are associated with 9.5</li>
+                        <li>Pin version in apt</li>
+                        <pre><code data-trim>
+$ cat /etc/apt/preferences.d/postgresql 
+
+Package: postgresql-* libpq5 libpq-dev
+Pin: version 9.4.6-1.*
+Pin-Priority: 501
+                        </code></pre>
+                    </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>File Locations</h2>
                     <ul>
                         <li>Data directory - /var/lib/postgresql/9.5/&lt;cluster_name&gt;</li>
@@ -196,7 +211,42 @@ host    all             all             127.0.0.1/32            md5
                         </small>
                         </aside>
                 </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Managing Default Versions</h2>
+                    <ul>
+                        <li>Debian automatically sets the default version to be used as the latest one installed</li>
+                        <li><b><i>update-alternatives</i></b> can be used to manage this manually or automatically</li>
+                        <pre><code data-trim>
+keith@debian:~$ sudo update-alternatives --get-selections
+[...]
+postmaster.1.gz    auto     /usr/share/postgresql/9.5/man/man1/postmaster.1.gz
+psql.1.gz          auto     /usr/share/postgresql/9.5/man/man1/psql.1.gz
+[...]
+                        </code></pre>
+                        <pre><code data-trim>
+keith@debian:~$ sudo update-alternatives --list psql.1.gz
+/usr/share/postgresql/9.4/man/man1/psql.1.gz
+/usr/share/postgresql/9.5/man/man1/psql.1.gz
+                        </code></pre>
+                        <li><b><i>--display</i></b> option shows everything each of these alternatives manages</li>
+                    </ul>
                 
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Managing Default Versions</h2>
+                        <pre><code data-trim>
+keith@debian:~$ sudo update-alternatives --config psql.1.gz
+There are 2 choices for the alternative psql.1.gz (providing /usr/share/man/man1/psql.1.gz).
+
+  Selection    Path                                          Priority   Status
+------------------------------------------------------------
+* 0            /usr/share/postgresql/9.5/man/man1/psql.1.gz   95        auto mode
+  1            /usr/share/postgresql/9.4/man/man1/psql.1.gz   94        manual mode
+  2            /usr/share/postgresql/9.5/man/man1/psql.1.gz   95        manual mode
+
+Press enter to keep the current choice[*], or type selection number:
+                        </code></pre>
+                </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>SystemD</h2>
                     <ul>
@@ -237,7 +287,7 @@ pg_ctlcluster 9.4 main stop -m fast
                         <li><a href="http://yum.postgresql.org/repopackages.php" target="_blank">http://yum.postgresql.org/repopackages.php</a> - RPMs for many different RedHat flavors and all versions of Postgres (including EOL'd)</li>
                         <li>Also includes some third-party applications similar to apt</li>
                         <pre><code data-trim>
-sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm
+sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-3.noarch.rpm
                         </code></pre>
                     </ul>
                 </section>
@@ -305,6 +355,82 @@ host    all             all             127.0.0.1/32            ident
                         </code></pre>
                        
                     </ul>
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Managing Default Versions</h2>
+                    <ul>
+                        <li>Similar to Debian, CentOS automatically sets the default version to be used as the latest one installed and <b><i>update-alternatives</i></b> can be used to manage this</li>
+                        <pre><code data-trim>
+[keith@centos alternatives]$ pwd
+/var/lib/alternatives
+[keith@centos alternatives]$ ls -l
+total 160
+-rw-r--r--. 1 root root  624 May 11 16:06 ip6tables.x86_64
+-rw-r--r--. 1 root root 1469 May 11 16:06 iptables.x86_64
+-rw-r--r--. 1 root root 2731 May 11 17:33 java
+-rw-r--r--. 1 root root  168 May 11 17:33 jre_1.6.0
+-rw-r--r--. 1 root root  169 May 11 17:33 jre_1.7.0
+-rw-r--r--. 1 root root  265 May 11 17:33 jre_openjdk
+-rw-r--r--. 1 root root   63 May 11 17:33 libnssckbi.so.x86_64
+-rw-r--r--. 1 root root  115 May 11 16:07 links
+-rw-r--r--. 1 root root  215 May 11 16:05 mail
+-rw-r--r--. 1 root root  689 May 11 17:33 mta
+-rw-r--r--. 1 root root   91 May 17 16:45 pgsql-clusterdb
+-rw-r--r--. 1 root root  130 May 17 16:45 pgsql-clusterdbman
+-rw-r--r--. 1 root root   88 May 17 16:45 pgsql-createdb
+-rw-r--r--. 1 root root  127 May 17 16:45 pgsql-createdbman
+-rw-r--r--. 1 root root   94 May 17 16:45 pgsql-createlang
+-rw-r--r--. 1 root root  133 May 17 16:45 pgsql-createlangman
+-rw-r--r--. 1 root root   94 May 17 16:45 pgsql-createuser
+-rw-r--r--. 1 root root  133 May 17 16:45 pgsql-createuserman
+-rw-r--r--. 1 root root   82 May 17 16:45 pgsql-dropdb
+-rw-r--r--. 1 root root  121 May 17 16:45 pgsql-dropdbman
+-rw-r--r--. 1 root root   88 May 17 16:45 pgsql-droplang
+-rw-r--r--. 1 root root  127 May 17 16:45 pgsql-droplangman
+-rw-r--r--. 1 root root   88 May 17 16:45 pgsql-dropuser
+-rw-r--r--. 1 root root  127 May 17 16:45 pgsql-dropuserman
+-rw-r--r--. 1 root root  150 May 17 16:45 pgsql-ld-conf
+-rw-r--r--. 1 root root  103 May 17 16:45 pgsql-pg_basebackup
+-rw-r--r--. 1 root root  142 May 17 16:45 pgsql-pg_basebackupman
+-rw-r--r--. 1 root root   85 May 17 16:45 pgsql-pg_dump
+-rw-r--r--. 1 root root   94 May 17 16:45 pgsql-pg_dumpall
+-rw-r--r--. 1 root root  133 May 17 16:45 pgsql-pg_dumpallman
+-rw-r--r--. 1 root root  124 May 17 16:45 pgsql-pg_dumpman
+-rw-r--r--. 1 root root   94 May 17 16:45 pgsql-pg_restore
+-rw-r--r--. 1 root root  133 May 17 16:45 pgsql-pg_restoreman
+-rw-r--r--. 1 root root   76 May 17 16:45 pgsql-psql
+-rw-r--r--. 1 root root  115 May 17 16:45 pgsql-psqlman
+-rw-r--r--. 1 root root   91 May 17 16:45 pgsql-reindexdb
+-rw-r--r--. 1 root root  130 May 17 16:45 pgsql-reindexdbman
+-rw-r--r--. 1 root root   88 May 17 16:45 pgsql-vacuumdb
+-rw-r--r--. 1 root root  127 May 17 16:45 pgsql-vacuumdbman
+-rw-r--r--. 1 root root  861 May 11 16:06 print
+                        </code></pre>
+                
+                </section>
+                <section data-background="css/theme/omniti_bg_logo.png">
+                    <h2>Managing Default Versions</h2>
+                        <pre><code data-trim>
+[keith@centos ~]$ sudo update-alternatives --display pgsql-psql
+pgsql-psql - status is auto.
+ link currently points to /usr/pgsql-9.5/bin/psql
+/usr/pgsql-9.4/bin/psql - priority 940
+/usr/pgsql-9.5/bin/psql - priority 950
+Current `best' version is /usr/pgsql-9.5/bin/psql.
+
+[keith@centos ~]$ sudo update-alternatives --config pgsql-psql
+
+There are 2 programs which provide 'pgsql-psql'.
+
+  Selection    Command
+-----------------------------------------------
+   1           /usr/pgsql-9.4/bin/psql
+*+ 2           /usr/pgsql-9.5/bin/psql
+
+Enter to keep the current selection[+], or type selection number:
+                        </code></pre>
+                        <p><b><i>--auto</i></b> option sets alternatives to automatically choose the one with highest priority</p>
+
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Service Management</h2>
@@ -426,8 +552,6 @@ host    all             all             127.0.0.1/32            trust
 postgresql_data="/usr/local/pgsql/data/9.5"
 postgresql_flags="-w -s -m fast"
 postgresql_initdb_flags="--encoding=utf-8 --lc-collate=C"
-postgresql_class="default"
-postgresql_profiles=""
                         </pre></code>
                         <li>Does not support multiple clusters on same machine</li>
                     </ul>
