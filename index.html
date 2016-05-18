@@ -107,19 +107,19 @@
                         <li>Default OS package is rarely the most current</li>
                         <li><a href="http://apt.postgresql.org" target="_blank">http://apt.postgresql.org</a> (redirects to wiki page)</li>
                         <li>Up to date packages (9.1 - 9.5) for currently supported releases of Debian & Ubuntu</li>
-                        <li>Also includes some third-party applications (pgadmin, pgbouncer, pgpool, etc)</li>
+                        <li>Also includes some third-party applications (pgadmin, pgbouncer, pg_partman, etc)</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li>postgresql-9.5 - main server package</li>
-                        <li>postgresql-client-9.5 - client only</li>
-                        <li>postgresql-contrib-9.5 - core contrib modules</li>
-                        <li>postgresql-server-dev-9.5 - development header files and libraries</li>
-                        <li>postgresql-doc-9.5 - documentation</li>
-                        <li>postgresql-common - cluster management</li>
-                        <li>libpq5 - library files for using PG C libraries</li>
+                        <li><b><i>postgresql-9.5</i></b> - main server package</li>
+                        <li><b><i>postgresql-client-9.5</i></b> - client only</li>
+                        <li><b><i>postgresql-contrib-9.5</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql-server-dev-9.5</i></b> - development header files and libraries</li>
+                        <li><b><i>postgresql-doc-9.5</i></b> - documentation</li>
+                        <li><b><i>postgresql-common</i></b> - cluster management</li>
+                        <li><b><i>libpq5</i></b> - library files for using PG C libraries</li>
                     </ul>
                     <br><br>Installing main server package will set up default instance
                 </section>
@@ -287,19 +287,19 @@ pg_ctlcluster 9.4 main stop -m fast
                         <li><a href="http://yum.postgresql.org/repopackages.php" target="_blank">http://yum.postgresql.org/repopackages.php</a> - RPMs for many different RedHat flavors and all versions of Postgres (including EOL'd)</li>
                         <li>Also includes some third-party applications similar to apt</li>
                         <pre><code data-trim>
-sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-3.noarch.rpm
+sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm 
                         </code></pre>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li>postgresql95 - client package</li>
-                        <li>postgresql95-server - main server package</li>
-                        <li>postgresql95-contrib - core contrib modules</li>
-                        <li>postgresql95-libs - shared libraries</li>
-                        <li>postgresql95-devel - development header files and libraries</li>
-                        <li>postgresql95-docs - documentation</li>
+                        <li><b><i>postgresql95</i></b> - client package</li>
+                        <li><b><i>postgresql95-server</i></b> - main server package</li>
+                        <li><b><i>postgresql95-contrib</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql95-libs</i></b> - shared libraries</li>
+                        <li><b><i>postgresql95-devel</i></b> - development header files and libraries</li>
+                        <li><b><i>postgresql95-docs</i></b> - documentation</li>
                     </ul>
                     <aside class="notes">
                         <small>
@@ -478,10 +478,10 @@ export PGPORT
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li>postgresql95-server - main server package</li>
-                        <li>postgresql95-client - client package</li>
-                        <li>postgresql95-contrib - core contrib modules</li>
-                        <li>postgresql95-docs - documentation</li>
+                        <li><b><i>postgresql95-server</i></b> - main server package</li>
+                        <li><b><i>postgresql95-client</i></b> - client package</li>
+                        <li><b><i>postgresql95-contrib</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql95-docs</i></b> - documentation</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
@@ -589,6 +589,7 @@ postgresql_data="/usr/local/pgsql/95/newdb"
                         <ul>
                             <li>gmake</li>
                         </ul>
+                        <li>Install Bison & Flex if compiling source from git repo</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
