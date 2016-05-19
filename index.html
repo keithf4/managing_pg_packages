@@ -253,6 +253,8 @@ Press enter to keep the current choice[*], or type selection number:
                         <li>Wrappers within wrappers</li>
                         <li>SystemD is not aware of each cluster unless you use it to start the cluster</li>
                         <pre><code data-trim>
+systemctl list-units | grep postgres
+
 sudo systemctl start postgresql@9.5-main 
 sudo systemctl stop postgresql@9.5-main 
                         </code></pre>
