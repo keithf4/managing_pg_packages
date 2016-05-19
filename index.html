@@ -315,7 +315,7 @@ sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6
                         <li>Default instance is not created upon server installation</li>
                         <pre><code data-trim>
 sudo service postgresql-9.5 initdb
-chkconfig postgresql-9.5 on
+sudo chkconfig postgresql-9.5 on
 sudo service postgresql-9.5 start
 
 sudo service postgresql-9.5 stop -m fast
@@ -538,7 +538,7 @@ host    all             all             127.0.0.1/32            trust
                     <h2>Managing Multiple Versions<br> & Upgrades</h2>
                     <ul>
                         <li>Multiple minor AND major version packages not supported at the same time. Installing a new packages will uninstall the old.</li>
-                        <li>Only supported upgrade is pg_dump -> shutdown -> install new packages -> pg_restore</li>
+                        <li>Only supported upgrade is <b><i>pg_dump -> shutdown -> install new packages -> pg_restore</i></b></li>
                         <li>Recommend manual, source installation for high availability production systems.</li>
                     </ul>
                 </section>
@@ -580,16 +580,16 @@ postgresql_data="/usr/local/pgsql/95/newdb"
                     <ul>
                         <li>Debian Required Packages</li>
                         <ul>
-                            <li>build-essential, libreadline-dev, zlib1g-dev</li>
+                            <li><b><i>build-essential</i></b>, <b><i>libreadline-dev</i></b>, <b><i>zlib1g-dev</i></b></li>
                         </ul>
                         <li>CentOS Required Packages</li>
                         <ul>
-                            <li>sudo yum groupinstall 'Development Tools'</li>
-                            <li>readline-devel, zlib-devel</li>
+                            <li><b><i>sudo yum groupinstall 'Development Tools'</i></b></li>
+                            <li><b><i>readline-devel</i></b>, <b><i>zlib-devel</i></b></li>
                         </ul>
                         <li>FreeBSD Required Packages</li>
                         <ul>
-                            <li>gmake</li>
+                            <li><b><i>gmake</i></b></li>
                         </ul>
                         <li>Install Bison & Flex if compiling source from git repo</li>
                     </ul>
@@ -627,7 +627,7 @@ make install-world
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Install Location</h2>
                     <ul id="li30" style="font-size:30px;">
-                        <li><b><i>/opt/pgsqlxx{x}</i></b></li>
+                        <li><b><i>configure --prefix=/opt/pgsqlxx{x}</i></b></li>
                         <ul>
                             <li>Can do for each minor version, but then have to reinstall all extensions every patch</li>
                         </ul>
