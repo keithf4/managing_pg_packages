@@ -155,9 +155,9 @@ Pin-Priority: 501
                         <li>Inside config directory, each instance has a start.conf</li>
                         <li>Only contains a single value</li>
                         <ul>
-                            <li>auto (default) - automatically start/stop this instance along with system</li>
-                            <li>manual - only start this instance manually (using pg_ctlcluster or systemd)</li>
-                            <li>disabled - do not allow startup with pg_ctlcluster (can be easily bypassed with pg_ctl)</li>
+                            <li><b><i>auto</i></b> (default) - automatically start/stop this instance along with system</li>
+                            <li><b><i>manual</i></b> - only start this instance manually (using pg_ctlcluster or systemd)</li>
+                            <li><b><i>disabled</i></b> - do not allow startup with pg_ctlcluster (can be easily bypassed with pg_ctl)</li>
                         </ul>
                     </ul>
                 </section>
@@ -437,7 +437,7 @@ Enter to keep the current selection[+], or type selection number:
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Service Management</h2>
                     <ul id="li30" style="font-size:25px;">
-                        <li>Starting with 9.0, one cluster per major version supported. Previously, only single cluster supported.</li>
+                        <li>Starting with 9.0, one cluster per major version supported by default. Previously, only single cluster supported.</li>
                         <li>Each major version has its own init.d - /etc/init.d/postgresql-9.5</li>
                         <li>Make copy(s) of default init.d for managing multiple clusters</li>
                         <pre><code data-trim>
@@ -490,7 +490,7 @@ export PGPORT
                     <h2>Setup</h2>
                     <ul>
                         <li>Default instance is not created upon server installation</li>
-                        <li>Enable postgres in rc.conf</li>
+                        <li>Enable postgres in /etc/rc.conf</li>
                         <pre><code data-trim>
 postgresql_enable="YES"
                         </code></pre>
@@ -509,7 +509,7 @@ sudo service postgresql stop -m fast
                         <li>Binaries - /usr/local/bin</li>
                         <li>Libraries - /usr/local/lib/postgresql</li>
                         <li>Shared (extensions) - /usr/local/share/postgresql</li>
-                        <li>Logs - syslog (recommend changing to pg_log)</li>
+                        <li>Logs - syslog (recommend changing to <b>stderr</b> in data directory pg_log)</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
