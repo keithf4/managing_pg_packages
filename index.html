@@ -505,6 +505,9 @@ sudo service postgresql stop -m fast
                     <h2>File Locations</h2>
                     <ul>
                         <li>Data directory - /usr/local/pgsql/data</li>
+                        <ul>
+                            <li>Changing in 9.6 - /var/db/postgres/data96</li>
+                        </ul>
                         <li>Config files - Contained in data directory</li>
                         <li>Binaries - /usr/local/bin</li>
                         <li>Libraries - /usr/local/lib/postgresql</li>
@@ -539,7 +542,16 @@ host    all             all             127.0.0.1/32            trust
                     <ul>
                         <li>Multiple minor AND major version packages not supported at the same time. Installing a new packages will uninstall the old.</li>
                         <li>Only supported upgrade is <b><i>pg_dump -> shutdown -> install new packages -> pg_restore</i></b></li>
-                        <li>Recommend manual, source installation for high availability production systems.</li>
+                        <ul>
+                            <li>Alternative:</li>
+                                <ol>
+                                    <li>source install new version to custom location</li>
+                                    <li>manually create new data directory structure</li>
+                                    <li><b>pg_upgrade</b> instance to new data directory location</li>
+                                    <li>install new packages &amp; start new cluster</li>
+                                </ol>
+                        </ul>
+                        <li>Until multiple major packages are supported, recommend manual, source installation for high availability production systems.</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
@@ -548,7 +560,7 @@ host    all             all             127.0.0.1/32            trust
                         <li>If using packages, recommend NOT using service initdb (no version folder)</li>
                         <li>Following file shows optional settings for rc.conf to control main PostgreSQL service</li>
                         <pre><code data-trim>
-/usr/ports/databases/postgresql94-server/files/README-server
+/usr/ports/databases/postgresql95-server/files/postgresql.in
                         </code></pre>
                         <pre><code data-trim>
 postgresql_data="/usr/local/pgsql/data/9.5"
