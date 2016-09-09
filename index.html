@@ -99,12 +99,12 @@
 
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h1>The Debian Way</h1>
-                    <p>Debian 8.4.0 64-bit</p>
+                    <p>Debian 8.5.0 64-bit</p>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Repository</h2>
                     <ul>
-                        <li>Default OS package is rarely the most current</li>
+                        <li>Default OS package is rarely the most current (currently 9.4)</li>
                         <li><a href="http://apt.postgresql.org" target="_blank">http://apt.postgresql.org</a> (redirects to wiki page)</li>
                         <li>Up to date packages (9.1 - 9.5) for currently supported releases of Debian & Ubuntu</li>
                         <li>Also includes some third-party applications (pgadmin, pgbouncer, pg_partman, etc)</li>
@@ -278,7 +278,7 @@ pg_ctlcluster 9.4 main stop -m fast
 
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h1>The CentOS Way</h1>
-                    <p>CentOS 6.7 64-bit</p>
+                    <p>CentOS 6.8 64-bit</p>
                 </section>
 
                 <section data-background="css/theme/omniti_bg_logo.png">
@@ -515,8 +515,8 @@ sudo service postgresql stop -m fast
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Default users & access</h2>
                     <ul>
-                        <li>System User - pgsql</li>
-                        <li>Roles - pgsql (superuser)</li>
+                        <li>System User - pgsql (changing to "postgres" as of 9.6)</li>
+                        <li>Roles - pgsql (superuser) (likely also changing in 9.6)</li>
                         <pre><code data-trim>
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust
