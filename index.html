@@ -69,7 +69,6 @@
                             <ul>
                                 <li>Millions+ of users</li>
                                 <li>Terabytes+ of data</li>
-                                <li>Gilt, Etsy, Ora.TV, Freelotto</li>
                             </ul>
                             <li>Surge Conference</li>
                             <ul>
@@ -99,25 +98,25 @@
 
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h1>The Debian Way</h1>
-                    <p>Debian 8.5.0 64-bit</p>
+                    <p>Debian 8.7.0 64-bit</p>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Repository</h2>
                     <ul>
                         <li>Default OS package is rarely the most current (currently 9.4)</li>
                         <li><a href="http://apt.postgresql.org" target="_blank">http://apt.postgresql.org</a> (redirects to wiki page)</li>
-                        <li>Up to date packages (9.1 - 9.5) for currently supported releases of Debian & Ubuntu</li>
+                        <li>Up to date packages (9.2 - 9.6) for currently supported releases of Debian & Ubuntu</li>
                         <li>Also includes some third-party applications (pgadmin, pgbouncer, pg_partman, etc)</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li><b><i>postgresql-9.5</i></b> - main server package</li>
-                        <li><b><i>postgresql-client-9.5</i></b> - client only</li>
-                        <li><b><i>postgresql-contrib-9.5</i></b> - core contrib modules</li>
-                        <li><b><i>postgresql-server-dev-9.5</i></b> - development header files and libraries</li>
-                        <li><b><i>postgresql-doc-9.5</i></b> - documentation</li>
+                        <li><b><i>postgresql-9.6</i></b> - main server package</li>
+                        <li><b><i>postgresql-client-9.6</i></b> - client only</li>
+                        <li><b><i>postgresql-contrib-9.6</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql-server-dev-9.6</i></b> - development header files and libraries</li>
+                        <li><b><i>postgresql-doc-9.6</i></b> - documentation</li>
                         <li><b><i>postgresql-common</i></b> - cluster management</li>
                         <li><b><i>libpq5</i></b> - library files for using PG C libraries</li>
                     </ul>
@@ -127,7 +126,7 @@
                     <h2>Version Pinning</h2>
                     <ul>
                         <li>Some non-versioned packages are associated with latest version installed</li>
-                        <li>If 9.4 & 9.5 are installed, <b><i>common</i></b> & <b><i>libpq5</i></b> are associated with 9.5</li>
+                        <li>If 9.5 & 9.6 are installed, <b><i>common</i></b> & <b><i>libpq5</i></b> are associated with 9.6</li>
                         <li>Pin version in apt</li>
                         <pre><code data-trim>
 $ cat /etc/apt/preferences.d/postgresql 
@@ -141,12 +140,12 @@ Pin-Priority: 501
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>File Locations</h2>
                     <ul>
-                        <li>Data directory - /var/lib/postgresql/9.5/&lt;cluster_name&gt;</li>
-                        <li>Config files - /etc/postgresql/9.5/&lt;cluster_name&gt;</li>
-                        <li>Binaries - /usr/lib/postgresql/9.5/bin</li>
-                        <li>Libraries - /usr/lib/postgresql/9.5/lib</li>
-                        <li>Shared (extensions) - /usr/share/postgresql/9.5</li>
-                        <li>Logs - /var/log/postgresql/postgresql-9.5-&lt;cluster_name&gt;.log</li>
+                        <li>Data directory - /var/lib/postgresql/9.6/&lt;cluster_name&gt;</li>
+                        <li>Config files - /etc/postgresql/9.6/&lt;cluster_name&gt;</li>
+                        <li>Binaries - /usr/lib/postgresql/9.6/bin</li>
+                        <li>Libraries - /usr/lib/postgresql/9.6/lib</li>
+                        <li>Shared (extensions) - /usr/share/postgresql/9.6</li>
+                        <li>Logs - /var/log/postgresql/postgresql-9.6-&lt;cluster_name&gt;.log</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
@@ -225,8 +224,8 @@ psql.1.gz          auto     /usr/share/postgresql/9.5/man/man1/psql.1.gz
                         </code></pre>
                         <pre><code data-trim>
 keith@debian:~$ sudo update-alternatives --list psql.1.gz
-/usr/share/postgresql/9.4/man/man1/psql.1.gz
 /usr/share/postgresql/9.5/man/man1/psql.1.gz
+/usr/share/postgresql/9.6/man/man1/psql.1.gz
                         </code></pre>
                         <li><b><i>--display</i></b> option shows everything each of these alternatives manages</li>
                     </ul>
@@ -240,9 +239,9 @@ There are 2 choices for the alternative psql.1.gz (providing /usr/share/man/man1
 
   Selection    Path                                          Priority   Status
 ------------------------------------------------------------
-* 0            /usr/share/postgresql/9.5/man/man1/psql.1.gz   95        auto mode
-  1            /usr/share/postgresql/9.4/man/man1/psql.1.gz   94        manual mode
-  2            /usr/share/postgresql/9.5/man/man1/psql.1.gz   95        manual mode
+* 0            /usr/share/postgresql/9.6/man/man1/psql.1.gz   96        auto mode
+  1            /usr/share/postgresql/9.5/man/man1/psql.1.gz   95        manual mode
+  2            /usr/share/postgresql/9.6/man/man1/psql.1.gz   96        manual mode
 
 Press enter to keep the current choice[*], or type selection number:
                         </code></pre>
@@ -251,7 +250,10 @@ Press enter to keep the current choice[*], or type selection number:
                     <h2>SystemD</h2>
                     <ul>
                         <li>Wrappers within wrappers</li>
-                        <li>SystemD is not aware of each cluster unless you use it to start the cluster</li>
+                        <li>pg_ctlcluster redirects to systemctl so SystemD should be aware of services stopping starting even if you don't use it</li>
+                        <ul>
+                            <li>Did not do this in early versions of Debian 8, so be sure to update to latest version</li>
+                        </ul>
                         <pre><code data-trim>
 systemctl list-units | grep postgres
 
@@ -260,12 +262,11 @@ sudo systemctl stop postgresql@9.5-main
                         </code></pre>
                         <li>If you need to stop via a mode other than default, use pg_ctlcluster</li>
                             <ul>
-                                <li>Default in 9.5: -m fast</li>
+                                <li>Default in 9.6: -m fast</li>
                                 <li>Default in &lt;= 9.4: -m smart</li>
                                 <pre><code data-trim>
 pg_ctlcluster 9.4 main stop -m fast
                                 </code></pre>
-                                <li>Just be sure to restart with systemd</li>
                             </ul>
                     </ul>
                     <aside class="notes">
@@ -289,19 +290,19 @@ pg_ctlcluster 9.4 main stop -m fast
                         <li><a href="http://yum.postgresql.org/repopackages.php" target="_blank">http://yum.postgresql.org/repopackages.php</a> - RPMs for many different RedHat flavors and all versions of Postgres (including EOL'd)</li>
                         <li>Also includes some third-party applications similar to apt</li>
                         <pre><code data-trim>
-sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6-x86_64/pgdg-centos95-9.5-2.noarch.rpm 
+sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
                         </code></pre>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li><b><i>postgresql95</i></b> - client package</li>
-                        <li><b><i>postgresql95-server</i></b> - main server package</li>
-                        <li><b><i>postgresql95-contrib</i></b> - core contrib modules</li>
-                        <li><b><i>postgresql95-libs</i></b> - shared libraries</li>
-                        <li><b><i>postgresql95-devel</i></b> - development header files and libraries</li>
-                        <li><b><i>postgresql95-docs</i></b> - documentation</li>
+                        <li><b><i>postgresql96</i></b> - client package</li>
+                        <li><b><i>postgresql96-server</i></b> - main server package</li>
+                        <li><b><i>postgresql96-contrib</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql96-libs</i></b> - shared libraries</li>
+                        <li><b><i>postgresql96-devel</i></b> - development header files and libraries</li>
+                        <li><b><i>postgresql96-docs</i></b> - documentation</li>
                     </ul>
                     <aside class="notes">
                         <small>
@@ -314,26 +315,26 @@ sudo yum install https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-6
                     <ul>
                         <li>Default instance is not created upon server installation</li>
                         <pre><code data-trim>
-sudo service postgresql-9.5 initdb
-sudo chkconfig postgresql-9.5 on
-sudo service postgresql-9.5 start
+sudo service postgresql-9.6 initdb
+sudo chkconfig postgresql-9.6 on
+sudo service postgresql-9.6 start
 
-sudo service postgresql-9.5 stop -m fast
+sudo service postgresql-9.6 stop -m fast
                         </code></pre>
                         <li>To create additional instances, use default initdb to designate new data directories</li>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>File Locations</h2>
                     <ul>
-                        <li>Data directory - /var/lib/pgsql/9.5/data</li>
+                        <li>Data directory - /var/lib/pgsql/9.6/data</li>
                         <li>Config files - Contained in data directory</li>
-                        <li>Binaries - /usr/pgsql-9.5/bin</li>
-                        <li>Libraries - /usr/pgsql-9.5/lib</li>
-                        <li>Shared (extensions) - /usr/pgsql-9.5/lib</li>
+                        <li>Binaries - /usr/pgsql-9.6/bin</li>
+                        <li>Libraries - /usr/pgsql-9.6/lib</li>
+                        <li>Shared (extensions) - /usr/pgsql-9.6/lib</li>
                         <li>Logs </li>
                         <ul>
                             <li>Database logs - pg_log in data directory</li>
-                            <li>Startup log - /var/lib/pgsql/9.5/pgstartup.log</li>
+                            <li>Startup log - /var/lib/pgsql/9.6/pgstartup.log</li>
                         </ul>
                     </ul>
                 </section>
@@ -413,12 +414,13 @@ total 160
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Managing Default Versions</h2>
                         <pre><code data-trim>
+
 [keith@centos ~]$ sudo update-alternatives --display pgsql-psql
 pgsql-psql - status is auto.
- link currently points to /usr/pgsql-9.5/bin/psql
-/usr/pgsql-9.4/bin/psql - priority 940
+ link currently points to /usr/pgsql-9.6/bin/psql
+/usr/pgsql-9.6/bin/psql - priority 960
 /usr/pgsql-9.5/bin/psql - priority 950
-Current `best' version is /usr/pgsql-9.5/bin/psql.
+Current `best' version is /usr/pgsql-9.6/bin/psql.
 
 [keith@centos ~]$ sudo update-alternatives --config pgsql-psql
 
@@ -426,8 +428,8 @@ There are 2 programs which provide 'pgsql-psql'.
 
   Selection    Command
 -----------------------------------------------
-   1           /usr/pgsql-9.4/bin/psql
-*+ 2           /usr/pgsql-9.5/bin/psql
+*+ 1           /usr/pgsql-9.6/bin/psql
+   2           /usr/pgsql-9.5/bin/psql
 
 Enter to keep the current selection[+], or type selection number:
                         </code></pre>
@@ -438,10 +440,10 @@ Enter to keep the current selection[+], or type selection number:
                     <h2>Service Management</h2>
                     <ul id="li30" style="font-size:25px;">
                         <li>Starting with 9.0, one cluster per major version supported by default. Previously, only single cluster supported.</li>
-                        <li>Each major version has its own init.d - /etc/init.d/postgresql-9.5</li>
+                        <li>Each major version has its own init.d - /etc/init.d/postgresql-9.6</li>
                         <li>Make copy(s) of default init.d for managing multiple clusters</li>
                         <pre><code data-trim>
-PGVERSION=9.0.23
+PGVERSION=9.6.1
 PGMAJORVERSION=`echo "$PGVERSION" | sed 's/^\([0-9]*\.[0-9]*\).*$/\1/'`
 NAME=`basename $0`
 PGENGINE=/usr/pgsql-${PGMAJORVERSION}/bin
@@ -480,10 +482,10 @@ export PGPORT
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li><b><i>postgresql95-server</i></b> - main server package</li>
-                        <li><b><i>postgresql95-client</i></b> - client package</li>
-                        <li><b><i>postgresql95-contrib</i></b> - core contrib modules</li>
-                        <li><b><i>postgresql95-docs</i></b> - documentation</li>
+                        <li><b><i>postgresql96-server</i></b> - main server package</li>
+                        <li><b><i>postgresql96-client</i></b> - client package</li>
+                        <li><b><i>postgresql96-contrib</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql96-docs</i></b> - documentation</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/omniti_bg_logo.png">
@@ -506,7 +508,7 @@ sudo service postgresql stop -m fast
                     <ul>
                         <li>Data directory - /usr/local/pgsql/data</li>
                         <ul>
-                            <li>Changing in 9.6 - /var/db/postgres/data96</li>
+                            <li>Changed in 9.6 - /var/db/postgres/data96</li>
                         </ul>
                         <li>Config files - Contained in data directory</li>
                         <li>Binaries - /usr/local/bin</li>
@@ -518,8 +520,8 @@ sudo service postgresql stop -m fast
                 <section data-background="css/theme/omniti_bg_logo.png">
                     <h2>Default users & access</h2>
                     <ul>
-                        <li>System User - pgsql (changing to "postgres" as of 9.6)</li>
-                        <li>Roles - pgsql (superuser) (likely also changing in 9.6)</li>
+                        <li>System User - pgsql (changed to "postgres" as of 9.6)</li>
+                        <li>Roles - pgsql (superuser) (changed to "postgres" in 9.6)</li>
                         <pre><code data-trim>
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust
