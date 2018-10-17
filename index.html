@@ -88,25 +88,25 @@
 
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h1>The Debian Way</h1>
-                    <p>Debian 8.7.0 64-bit</p>
+                    <p>Debian 9.5.0 64-bit</p>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Repository</h2>
                     <ul>
-                        <li>Default OS package is rarely the most current (currently 9.4)</li>
+                        <li>Default OS package is rarely the most current (currently 9.6)</li>
                         <li><a href="http://apt.postgresql.org" target="_blank">http://apt.postgresql.org</a> (redirects to wiki page)</li>
-                        <li>Up to date packages (9.2 - 9.6) for currently supported releases of Debian & Ubuntu</li>
+                        <li>Up to date packages (9.2 - 11) for currently supported releases of Debian &amp; Ubuntu</li>
                         <li>Also includes some third-party applications (pgadmin, pgbouncer, pg_partman, etc)</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li><b><i>postgresql-9.6</i></b> - main server package</li>
-                        <li><b><i>postgresql-client-9.6</i></b> - client only</li>
-                        <li><b><i>postgresql-contrib-9.6</i></b> - core contrib modules</li>
-                        <li><b><i>postgresql-server-dev-9.6</i></b> - development header files and libraries</li>
-                        <li><b><i>postgresql-doc-9.6</i></b> - documentation</li>
+                        <li><b><i>postgresql-10</i></b> - main server package</li>
+                        <li><b><i>postgresql-client-10</i></b> - client only</li>
+                        <li><b><i>postgresql-server-dev-10</i></b> - development header files and libraries</li>
+                        <li><b><i>postgresql-doc-10</i></b> - documentation</li>
+                        <li><b><i>postgresql-contrib</i></b> - core contrib modules (previous versions had version tag on pkg name)</li>
                         <li><b><i>postgresql-common</i></b> - cluster management</li>
                         <li><b><i>libpq5</i></b> - library files for using PG C libraries</li>
                     </ul>
@@ -116,7 +116,7 @@
                     <h2>Version Pinning</h2>
                     <ul>
                         <li>Some non-versioned packages are associated with latest version installed</li>
-                        <li>If 9.5 & 9.6 are installed, <b><i>common</i></b> & <b><i>libpq5</i></b> are associated with 9.6</li>
+                        <li>If 9.5 &amp; 9.6 are installed, <b><i>common</i></b> &amp; <b><i>libpq5</i></b> are associated with 9.6</li>
                         <li>Pin version in apt</li>
                         <pre><code data-trim>
 $ cat /etc/apt/preferences.d/postgresql 
@@ -130,12 +130,12 @@ Pin-Priority: 501
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>File Locations</h2>
                     <ul>
-                        <li>Data directory - /var/lib/postgresql/9.6/&lt;cluster_name&gt;</li>
-                        <li>Config files - /etc/postgresql/9.6/&lt;cluster_name&gt;</li>
-                        <li>Binaries - /usr/lib/postgresql/9.6/bin</li>
-                        <li>Libraries - /usr/lib/postgresql/9.6/lib</li>
-                        <li>Shared (extensions) - /usr/share/postgresql/9.6</li>
-                        <li>Logs - /var/log/postgresql/postgresql-9.6-&lt;cluster_name&gt;.log</li>
+                        <li>Data directory - /var/lib/postgresql/10/&lt;cluster_name&gt;</li>
+                        <li>Config files - /etc/postgresql/10/&lt;cluster_name&gt;</li>
+                        <li>Binaries - /usr/lib/postgresql/10/bin</li>
+                        <li>Libraries - /usr/lib/postgresql/10/lib</li>
+                        <li>Shared (extensions) - /usr/share/postgresql/10</li>
+                        <li>Logs - /var/log/postgresql/postgresql-10-&lt;cluster_name&gt;.log</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
@@ -203,18 +203,18 @@ host    all             all             127.0.0.1/32            md5
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Managing Default Versions</h2>
                     <ul>
-                        <li>Debian automatically sets the default version to be used as the latest one installed</li>
+                        <li>Debian automatically sets the default version to be used as the highest version installed</li>
                         <li><b><i>update-alternatives</i></b> can be used to manage this manually or automatically</li>
                         <pre><code data-trim>
-keith@debian:~$ sudo update-alternatives --get-selections
-[...]
-postmaster.1.gz    auto     /usr/share/postgresql/9.5/man/man1/postmaster.1.gz
-psql.1.gz          auto     /usr/share/postgresql/9.5/man/man1/psql.1.gz
-[...]
+keith@debian:~$ sudo update-alternatives --get-selections | grep postgres
+
+postmaster.1.gz                auto     /usr/share/postgresql/10/man/man1/postmaster.1.gz
+psql.1.gz                      auto     /usr/share/postgresql/10/man/man1/psql.1.gz
                         </code></pre>
                         <pre><code data-trim>
 keith@debian:~$ sudo update-alternatives --list psql.1.gz
-/usr/share/postgresql/9.5/man/man1/psql.1.gz
+
+/usr/share/postgresql/10/man/man1/psql.1.gz
 /usr/share/postgresql/9.6/man/man1/psql.1.gz
                         </code></pre>
                         <li><b><i>--display</i></b> option shows everything each of these alternatives manages</li>
@@ -229,8 +229,8 @@ There are 2 choices for the alternative psql.1.gz (providing /usr/share/man/man1
 
   Selection    Path                                          Priority   Status
 ------------------------------------------------------------
-* 0            /usr/share/postgresql/9.6/man/man1/psql.1.gz   96        auto mode
-  1            /usr/share/postgresql/9.5/man/man1/psql.1.gz   95        manual mode
+* 0            /usr/share/postgresql/10/man/man1/psql.1.gz    100       auto mode
+  1            /usr/share/postgresql/10/man/man1/psql.1.gz    100       manual mode
   2            /usr/share/postgresql/9.6/man/man1/psql.1.gz   96        manual mode
 
 Press enter to keep the current choice[*], or type selection number:
@@ -247,12 +247,12 @@ Press enter to keep the current choice[*], or type selection number:
                         <pre><code data-trim>
 systemctl list-units | grep postgres
 
-sudo systemctl start postgresql@9.5-main 
-sudo systemctl stop postgresql@9.5-main 
+sudo systemctl start postgresql@10-main 
+sudo systemctl stop postgresql@10-main 
                         </code></pre>
                         <li>If you need to stop via a mode other than default, use pg_ctlcluster</li>
                             <ul>
-                                <li>Default in 9.6: -m fast</li>
+                                <li>Default in 9.6+: -m fast</li>
                                 <li>Default in &lt;= 9.4: -m smart</li>
                                 <pre><code data-trim>
 pg_ctlcluster 9.4 main stop -m fast
@@ -269,34 +269,35 @@ pg_ctlcluster 9.4 main stop -m fast
 
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h1>The CentOS Way</h1>
-                    <p>CentOS 6.8 64-bit</p>
+                    <p>CentOS 7.5 64-bit</p>
                 </section>
 
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Repository</h2>
                     <ul>
-                        <li>Default OS package is 8.4 (EOL)</li>
-                        <li><a href="http://www.postgresql.org/download/linux/redhat/" target="_blank">http://www.postgresql.org/download/linux/redhat/</a> - General Instructions</li>
-                        <li><a href="http://yum.postgresql.org/repopackages.php" target="_blank">http://yum.postgresql.org/repopackages.php</a> - RPMs for many different RedHat flavors and all versions of Postgres (including EOL'd)</li>
-                        <li>Also includes some third-party applications similar to apt</li>
+                        <li>Default OS package is 9.2 (EOL)</li>
+                        <li><a href="http://www.postgresql.org/download/linux/redhat/" target="_blank">https://www.postgresql.org/download/linux/redhat//</a></li>
+                        <ul>
+                            <li>Provides form that gives instructions for all RPM-based distros (RHEL, CentOS, Scientific, Oracle, etc)</li>
+                        </ul>
                         <pre><code data-trim>
-sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
                         </code></pre>
                     </ul>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li><b><i>postgresql96</i></b> - client package</li>
-                        <li><b><i>postgresql96-server</i></b> - main server package</li>
-                        <li><b><i>postgresql96-contrib</i></b> - core contrib modules</li>
-                        <li><b><i>postgresql96-libs</i></b> - shared libraries</li>
-                        <li><b><i>postgresql96-devel</i></b> - development header files and libraries</li>
-                        <li><b><i>postgresql96-docs</i></b> - documentation</li>
+                        <li><b><i>postgresql10</i></b> - client package</li>
+                        <li><b><i>postgresql10-server</i></b> - main server package</li>
+                        <li><b><i>postgresql10-contrib</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql10-libs</i></b> - shared libraries</li>
+                        <li><b><i>postgresql10-devel</i></b> - development header files and libraries</li>
+                        <li><b><i>postgresql10-docs</i></b> - documentation</li>
                     </ul>
                     <aside class="notes">
                         <small>
-                            Package without the major version number is the OS default. Server installs client & libs.
+                            Package without the major version number is the OS default. Server installs client &amp; libs.
                         </small>
                     </aside>
                 </section>
@@ -304,27 +305,27 @@ sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6
                     <h2>Setup</h2>
                     <ul>
                         <li>Default instance is not created upon server installation</li>
+                        <li>Default service managed by SystemD</li>
                         <pre><code data-trim>
-sudo service postgresql-9.6 initdb
-sudo chkconfig postgresql-9.6 on
-sudo service postgresql-9.6 start
+/usr/pgsql-10/bin/postgresql-10-setup initdb
+sudo systemctl enable postgresql-10
+sudo systemctl enable postgresql-10
 
-sudo service postgresql-9.6 stop -m fast
+sudo systemctl stop postgresql-10
                         </code></pre>
                         <li>To create additional instances, use default initdb to designate new data directories</li>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>File Locations</h2>
                     <ul>
-                        <li>Data directory - /var/lib/pgsql/9.6/data</li>
+                        <li>Data directory - /var/lib/pgsql/10/data</li>
                         <li>Config files - Contained in data directory</li>
-                        <li>Binaries - /usr/pgsql-9.6/bin</li>
-                        <li>Libraries - /usr/pgsql-9.6/lib</li>
-                        <li>Shared (extensions) - /usr/pgsql-9.6/lib</li>
+                        <li>Binaries - /usr/pgsql-10/bin</li>
+                        <li>Libraries - /usr/pgsql-10/lib</li>
+                        <li>Shared (extensions) - /usr/pgsql-10/lib</li>
                         <li>Logs </li>
                         <ul>
-                            <li>Database logs - pg_log in data directory</li>
-                            <li>Startup log - /var/lib/pgsql/9.6/pgstartup.log</li>
+                            <li>Database logs - log in data directory (pg_log for 9.6-)</li>
                         </ul>
                     </ul>
                 </section>
@@ -335,7 +336,7 @@ sudo service postgresql-9.6 stop -m fast
                         <li>Roles - postgres (superuser)</li>
                         <pre><code data-trim>
 # "local" is for Unix domain socket connections only
-local   all             all                                     ident
+local   all             all                                     peer
 # IPv4 local connections:
 host    all             all             127.0.0.1/32            ident
                         </code></pre>
@@ -352,52 +353,60 @@ host    all             all             127.0.0.1/32            ident
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Managing Default Versions</h2>
                     <ul>
-                        <li>Similar to Debian, CentOS automatically sets the default version to be used as the latest one installed and <b><i>update-alternatives</i></b> can be used to manage this</li>
+                        <li>Similar to Debian, CentOS automatically sets the default version to be used as the highest one installed and <b><i>update-alternatives</i></b> can be used to manage this</li>
                         <pre><code data-trim>
 [keith@centos alternatives]$ pwd
 /var/lib/alternatives
-[keith@centos alternatives]$ ls -l
-total 160
--rw-r--r--. 1 root root  624 May 11 16:06 ip6tables.x86_64
--rw-r--r--. 1 root root 1469 May 11 16:06 iptables.x86_64
--rw-r--r--. 1 root root 2731 May 11 17:33 java
--rw-r--r--. 1 root root  168 May 11 17:33 jre_1.6.0
--rw-r--r--. 1 root root  169 May 11 17:33 jre_1.7.0
--rw-r--r--. 1 root root  265 May 11 17:33 jre_openjdk
--rw-r--r--. 1 root root   63 May 11 17:33 libnssckbi.so.x86_64
--rw-r--r--. 1 root root  115 May 11 16:07 links
--rw-r--r--. 1 root root  215 May 11 16:05 mail
--rw-r--r--. 1 root root  689 May 11 17:33 mta
--rw-r--r--. 1 root root   91 May 17 16:45 pgsql-clusterdb
--rw-r--r--. 1 root root  130 May 17 16:45 pgsql-clusterdbman
--rw-r--r--. 1 root root   88 May 17 16:45 pgsql-createdb
--rw-r--r--. 1 root root  127 May 17 16:45 pgsql-createdbman
--rw-r--r--. 1 root root   94 May 17 16:45 pgsql-createlang
--rw-r--r--. 1 root root  133 May 17 16:45 pgsql-createlangman
--rw-r--r--. 1 root root   94 May 17 16:45 pgsql-createuser
--rw-r--r--. 1 root root  133 May 17 16:45 pgsql-createuserman
--rw-r--r--. 1 root root   82 May 17 16:45 pgsql-dropdb
--rw-r--r--. 1 root root  121 May 17 16:45 pgsql-dropdbman
--rw-r--r--. 1 root root   88 May 17 16:45 pgsql-droplang
--rw-r--r--. 1 root root  127 May 17 16:45 pgsql-droplangman
--rw-r--r--. 1 root root   88 May 17 16:45 pgsql-dropuser
--rw-r--r--. 1 root root  127 May 17 16:45 pgsql-dropuserman
--rw-r--r--. 1 root root  150 May 17 16:45 pgsql-ld-conf
--rw-r--r--. 1 root root  103 May 17 16:45 pgsql-pg_basebackup
--rw-r--r--. 1 root root  142 May 17 16:45 pgsql-pg_basebackupman
--rw-r--r--. 1 root root   85 May 17 16:45 pgsql-pg_dump
--rw-r--r--. 1 root root   94 May 17 16:45 pgsql-pg_dumpall
--rw-r--r--. 1 root root  133 May 17 16:45 pgsql-pg_dumpallman
--rw-r--r--. 1 root root  124 May 17 16:45 pgsql-pg_dumpman
--rw-r--r--. 1 root root   94 May 17 16:45 pgsql-pg_restore
--rw-r--r--. 1 root root  133 May 17 16:45 pgsql-pg_restoreman
--rw-r--r--. 1 root root   76 May 17 16:45 pgsql-psql
--rw-r--r--. 1 root root  115 May 17 16:45 pgsql-psqlman
--rw-r--r--. 1 root root   91 May 17 16:45 pgsql-reindexdb
--rw-r--r--. 1 root root  130 May 17 16:45 pgsql-reindexdbman
--rw-r--r--. 1 root root   88 May 17 16:45 pgsql-vacuumdb
--rw-r--r--. 1 root root  127 May 17 16:45 pgsql-vacuumdbman
--rw-r--r--. 1 root root  861 May 11 16:06 print
+[training@localhost alternatives]$ ls -l
+total 196
+-rw-r--r--. 1 root root  400 Jan 24  2018 cdrecord
+-rw-r--r--. 1 root root  114 Aug 29 16:26 cifs-idmap-plugin
+-rw-r--r--. 1 root root   63 Aug 29 16:28 cups_backend_smb
+-rw-r--r--. 1 root root   63 Aug 29 16:28 google-chrome
+-rw-r--r--. 1 root root 4411 Aug 29 16:29 java
+-rw-r--r--. 1 root root  253 Aug 29 16:29 jre_1.7.0
+-rw-r--r--. 1 root root  264 Aug 29 16:29 jre_1.7.0_openjdk
+-rw-r--r--. 1 root root  243 Aug 29 16:29 jre_1.8.0
+-rw-r--r--. 1 root root  258 Aug 29 16:29 jre_1.8.0_openjdk
+-rw-r--r--. 1 root root  424 Aug 29 16:29 jre_openjdk
+-rw-r--r--. 1 root root   57 Aug 29 16:27 ld
+-rw-r--r--. 1 root root  531 Aug 20 14:18 libjavaplugin.so.x86_64
+-rw-r--r--. 1 root root  101 Aug 29 16:26 libnssckbi.so.x86_64
+-rw-r--r--. 1 root root   86 Aug 29 16:30 libwbclient.so.0.14-64
+-rw-r--r--. 1 root root  283 Jan 24  2018 mkisofs
+-rw-r--r--. 1 root root  689 Jan 24  2018 mta
+-rw-r--r--. 1 root root  103 Feb 12  2018 pax
+-rw-r--r--. 1 root root   91 Oct 17 19:12 pgsql-clusterdb
+-rw-r--r--. 1 root root  130 Oct 17 19:12 pgsql-clusterdbman
+-rw-r--r--. 1 root root   88 Oct 17 19:12 pgsql-createdb
+-rw-r--r--. 1 root root  127 Oct 17 19:12 pgsql-createdbman
+-rw-r--r--. 1 root root   60 Oct 17 19:12 pgsql-createlang
+-rw-r--r--. 1 root root   86 Oct 17 19:12 pgsql-createlangman
+-rw-r--r--. 1 root root   94 Oct 17 19:12 pgsql-createuser
+-rw-r--r--. 1 root root  133 Oct 17 19:12 pgsql-createuserman
+-rw-r--r--. 1 root root   82 Oct 17 19:12 pgsql-dropdb
+-rw-r--r--. 1 root root  121 Oct 17 19:12 pgsql-dropdbman
+-rw-r--r--. 1 root root   56 Oct 17 19:12 pgsql-droplang
+-rw-r--r--. 1 root root   82 Oct 17 19:12 pgsql-droplangman
+-rw-r--r--. 1 root root   88 Oct 17 19:12 pgsql-dropuser
+-rw-r--r--. 1 root root  127 Oct 17 19:12 pgsql-dropuserman
+-rw-r--r--. 1 root root  149 Oct 17 19:12 pgsql-ld-conf
+-rw-r--r--. 1 root root  103 Oct 17 19:12 pgsql-pg_basebackup
+-rw-r--r--. 1 root root  142 Oct 17 19:12 pgsql-pg_basebackupman
+-rw-r--r--. 1 root root   85 Oct 17 19:12 pgsql-pg_dump
+-rw-r--r--. 1 root root   94 Oct 17 19:12 pgsql-pg_dumpall
+-rw-r--r--. 1 root root  133 Oct 17 19:12 pgsql-pg_dumpallman
+-rw-r--r--. 1 root root  124 Oct 17 19:12 pgsql-pg_dumpman
+-rw-r--r--. 1 root root   94 Oct 17 19:12 pgsql-pg_restore
+-rw-r--r--. 1 root root  133 Oct 17 19:12 pgsql-pg_restoreman
+-rw-r--r--. 1 root root   76 Oct 17 19:12 pgsql-psql
+-rw-r--r--. 1 root root  115 Oct 17 19:12 pgsql-psqlman
+-rw-r--r--. 1 root root   91 Oct 17 19:12 pgsql-reindexdb
+-rw-r--r--. 1 root root  130 Oct 17 19:12 pgsql-reindexdbman
+-rw-r--r--. 1 root root   88 Oct 17 19:12 pgsql-vacuumdb
+-rw-r--r--. 1 root root  127 Oct 17 19:12 pgsql-vacuumdbman
+-rw-r--r--. 1 root root  856 Aug 20 14:11 print
+-rw-r--r--. 1 root root  181 Aug 20 14:14 xinputrc
                         </code></pre>
                 
                 </section>
@@ -405,23 +414,23 @@ total 160
                     <h2>Managing Default Versions</h2>
                         <pre><code data-trim>
 
-[keith@centos ~]$ sudo update-alternatives --display pgsql-psql
+$ sudo update-alternatives --display pgsql-psql
 pgsql-psql - status is auto.
- link currently points to /usr/pgsql-9.6/bin/psql
+ link currently points to /usr/pgsql-10/bin/psql
+/usr/pgsql-10/bin/psql - priority 1000
 /usr/pgsql-9.6/bin/psql - priority 960
-/usr/pgsql-9.5/bin/psql - priority 950
-Current `best' version is /usr/pgsql-9.6/bin/psql.
+Current `best' version is /usr/pgsql-10/bin/psql.
 
-[keith@centos ~]$ sudo update-alternatives --config pgsql-psql
+$ sudo update-alternatives --config pgsql-psql
 
 There are 2 programs which provide 'pgsql-psql'.
 
   Selection    Command
 -----------------------------------------------
-*+ 1           /usr/pgsql-9.6/bin/psql
-   2           /usr/pgsql-9.5/bin/psql
+*+ 1           /usr/pgsql-10/bin/psql
+   2           /usr/pgsql-9.6/bin/psql
 
-Enter to keep the current selection[+], or type selection number:
+Enter to keep the current selection[+], or type selection number: 
                         </code></pre>
                         <p><b><i>--auto</i></b> option sets alternatives to automatically choose the one with highest priority</p>
 
@@ -430,24 +439,18 @@ Enter to keep the current selection[+], or type selection number:
                     <h2>Service Management</h2>
                     <ul id="li30" style="font-size:25px;">
                         <li>Starting with 9.0, one cluster per major version supported by default. Previously, only single cluster supported.</li>
-                        <li>Each major version has its own init.d - /etc/init.d/postgresql-9.6</li>
-                        <li>Make copy(s) of default init.d for managing multiple clusters</li>
+                        <li>Starting with CentOS7, all services managed by systemd. Each major version gets its own service</li>
+
+[training@localhost system]$ pwd
+/usr/lib/systemd/system
+[training@localhost system]$ ls -l | grep postgres
+-rw-r--r--. 1 root root 1728 Aug  9 05:35 postgresql-10.service
+-rw-r--r--. 1 root root 1730 Aug  9 05:27 postgresql-9.6.service
+6
+                        <li>Make copy(s) of default service files for managing multiple clusters of same major version</li>
+                        <li>Just need to change data directory that service points to</li>
                         <pre><code data-trim>
-PGVERSION=9.6.1
-PGMAJORVERSION=`echo "$PGVERSION" | sed 's/^\([0-9]*\.[0-9]*\).*$/\1/'`
-NAME=`basename $0`
-PGENGINE=/usr/pgsql-${PGMAJORVERSION}/bin
-PGPORT=5432
-PGDATA=/var/lib/pgsql/${PGMAJORVERSION}/data
-PGLOG=/var/lib/pgsql/${PGMAJORVERSION}/pgstartup.log
-lockfile="/var/lock/subsys/${NAME}.${PGPORT}"
-pidfile="/var/run/${NAME}.pid"
-                        </code></pre>
-                        <pre><code data-trim>
-# Override defaults from /etc/sysconfig/pgsql if file is present
-[ -f /etc/sysconfig/pgsql/${NAME} ] && . /etc/sysconfig/pgsql/${NAME}
-export PGDATA
-export PGPORT
+Environment=PGDATA=/var/lib/pgsql/10/my_other_db/
                         </code></pre>
                     </ul>
                 </section>
