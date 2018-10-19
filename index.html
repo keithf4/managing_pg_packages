@@ -110,7 +110,7 @@
                         <li><b><i>postgresql-common</i></b> - cluster management</li>
                         <li><b><i>libpq5</i></b> - library files for using PG C libraries</li>
                     </ul>
-                    <br><br>Installing main server package will set up default instance
+                    <br><br>Installing main server package will automatically set up default instance
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Version Pinning</h2>
@@ -278,7 +278,7 @@ pg_ctlcluster 9.4 main stop -m fast
                         <li>Default OS package is 9.2 (EOL)</li>
                         <li><a href="http://www.postgresql.org/download/linux/redhat/" target="_blank">https://www.postgresql.org/download/linux/redhat//</a></li>
                         <ul>
-                            <li>Provides form that gives instructions for all RPM-based distros (RHEL, CentOS, Scientific, Oracle, etc)</li>
+                            <li>Provides form that gives instructions for all RPM-based distros (RHEL, CentOS, Scientific, Oracle, etc) &amp; and all supported PG versions</li>
                         </ul>
                         <pre><code data-trim>
 yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
@@ -309,7 +309,7 @@ yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_6
                         <pre><code data-trim>
 /usr/pgsql-10/bin/postgresql-10-setup initdb
 sudo systemctl enable postgresql-10
-sudo systemctl enable postgresql-10
+sudo systemctl start postgresql-10
 
 sudo systemctl stop postgresql-10
                         </code></pre>
@@ -440,13 +440,15 @@ Enter to keep the current selection[+], or type selection number:
                     <ul id="li30" style="font-size:25px;">
                         <li>Starting with 9.0, one cluster per major version supported by default. Previously, only single cluster supported.</li>
                         <li>Starting with CentOS7, all services managed by systemd. Each major version gets its own service</li>
-
-[training@localhost system]$ pwd
+                        <pre><code data-trim>
+$ pwd
 /usr/lib/systemd/system
-[training@localhost system]$ ls -l | grep postgres
+
+$ ls -l | grep postgres
 -rw-r--r--. 1 root root 1728 Aug  9 05:35 postgresql-10.service
 -rw-r--r--. 1 root root 1730 Aug  9 05:27 postgresql-9.6.service
-6
+                        </code></pre>
+
                         <li>Make copy(s) of default service files for managing multiple clusters of same major version</li>
                         <li>Just need to change data directory that service points to</li>
                         <pre><code data-trim>
@@ -458,7 +460,7 @@ Environment=PGDATA=/var/lib/pgsql/10/my_other_db/
 
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h1>The FreeBSD Way</h1>
-                    <p>FreeBSD 11.0 64-bit</p>
+                    <p>FreeBSD 11.2 64-bit</p>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Repository</h2>
@@ -470,18 +472,20 @@ Environment=PGDATA=/var/lib/pgsql/10/my_other_db/
                         </ul>
                         <li>Generally both kept up to date, but Ports usually ahead of Packages</li>
                         <ul>
-                            <li>FreeBSD 10.3 <b>pkg</b> only goes up to PG 9.5</li>
+                            <li>FreeBSD 10.3 <b>pkg</b> was only at PG 9.5 until 10 was almost out</li>
+                            <li>FreeBSD 11.2 <b>pkg</b> is caught up to 10, but doesn't have 11 yet (just released Oct 18)</li>
                         </ul>
+                        <li>Recommend <b>ports</b> if you will be developing or compiling additional libraries/extensions yourself</li>
                         <li>Either method is managed the same after install</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Packages</h2>
                     <ul>
-                        <li><b><i>postgresql96-server</i></b> - main server package</li>
-                        <li><b><i>postgresql96-client</i></b> - client package</li>
-                        <li><b><i>postgresql96-contrib</i></b> - core contrib modules</li>
-                        <li><b><i>postgresql96-docs</i></b> - documentation</li>
+                        <li><b><i>postgresql10-server</i></b> - main server package</li>
+                        <li><b><i>postgresql10-client</i></b> - client package</li>
+                        <li><b><i>postgresql10-contrib</i></b> - core contrib modules</li>
+                        <li><b><i>postgresql10-docs</i></b> - documentation</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
@@ -505,12 +509,13 @@ sudo service postgresql stop -m fast
                         <li>Data directory - /usr/local/pgsql/data</li>
                         <ul>
                             <li>Changed in 9.6 - /var/db/postgres/data96</li>
+                            <li>10 - /var/db/postgres/data10</li>
                         </ul>
                         <li>Config files - Contained in data directory</li>
                         <li>Binaries - /usr/local/bin</li>
                         <li>Libraries - /usr/local/lib/postgresql</li>
                         <li>Shared (extensions) - /usr/local/share/postgresql</li>
-                        <li>Logs - syslog (recommend changing to <b>stderr</b> in data directory pg_log)</li>
+                        <li>Logs - syslog (recommend changing to <b>stderr</b> in data directory (pg_)log)</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
@@ -555,13 +560,12 @@ host    all             all             127.0.0.1/32            trust
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Non-Default Data Location</h2>
                     <ul>
-                        <li>If using packages, recommend NOT using service initdb (no version folder)</li>
-                        <li>Following file shows optional settings for rc.conf to control main PostgreSQL service</li>
+                        <li>For 9.6+, rc.d init file shows optional settings for rc.conf to control main PostgreSQL service</li>
                         <pre><code data-trim>
-/usr/ports/databases/postgresql95-server/files/postgresql.in
+/usr/local/etc/rc.d/postgresql
                         </code></pre>
                         <pre><code data-trim>
-postgresql_data="/usr/local/pgsql/data/9.5"
+postgresql_data="/usr/local/pgsql/data/10
 postgresql_flags="-w -s -m fast"
 postgresql_initdb_flags="--encoding=utf-8 --lc-collate=C"
                         </pre></code>
@@ -574,10 +578,11 @@ postgresql_initdb_flags="--encoding=utf-8 --lc-collate=C"
                         <li>Similar to CentOS, make copies of /usr/local/etc/rc.d/postgresql file</li>
                         <pre><code data-trim>
 REPLACE:
+# set defaults
 eval postgresql_data=${postgresql_data:-"~${postgresql_user}/data"}
 
 WITH:
-postgresql_data="/usr/local/pgsql/95/newdb"
+postgresql_data="/usr/local/pgsql/10/newdb"
                         </code></pre>
                         <li><a href="https://www.textplain.net/tutorials/2015/running-postgresql-in-freebsd-jails/" target="_blank">Running PostgreSQL in FreeBSD Jails</a></li>
                 </section>
@@ -594,14 +599,21 @@ postgresql_data="/usr/local/pgsql/95/newdb"
                         </ul>
                         <li>CentOS Required Packages</li>
                         <ul>
-                            <li><b><i>sudo yum groupinstall 'Development Tools'</i></b></li>
+                            <li><b><i>sudo yum --setopt=group_package_types=mandatory,default,optional groupinstall "Development Tools"</i></b></li>
+                            <ul>
+                                <li>By default, CentOS7 only set optional packages for this group, so normal groupinstall doesn't install anything</li>
                             <li><b><i>readline-devel</i></b>, <b><i>zlib-devel</i></b></li>
                         </ul>
                         <li>FreeBSD Required Packages</li>
                         <ul>
                             <li><b><i>gmake</i></b></li>
+                            <li>As of FreeBSD11.2, requires <b><i>readline</i></b> package and setting local includes path to find readline headers</li>
+                            <pre><code data-trim>
+                                pkg install readline
+                                ./configure --with-includes=/usr/local/include
+                            </code></pre>
                         </ul>
-                        <li>Install Bison & Flex if compiling source from git repo</li>
+                        <li>Install Bison &amp; Flex if compiling source from git repo</li>
                     </ul>
                 </section>
                 <section data-background="css/theme/crunchy_white_bg.png">
