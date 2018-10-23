@@ -325,7 +325,7 @@ sudo systemctl stop postgresql-10
                         <li>Shared (extensions) - /usr/pgsql-10/lib</li>
                         <li>Logs </li>
                         <ul>
-                            <li>Database logs - log in data directory (pg_log for 9.6-)</li>
+                            <li>Database logs - <b><i>log</i></b> in data directory (pg_log for 9.6-)</li>
                         </ul>
                     </ul>
                 </section>
@@ -504,10 +504,11 @@ sudo service postgresql stop -m fast
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>File Locations</h2>
                     <ul>
-                        <li>Data directory - /usr/local/pgsql/data</li>
+                        <li>Data directory - /var/db/postgres/data##
                         <ul>
-                            <li>Changed in 9.6 - /var/db/postgres/data96</li>
+                            <li>9.6 - /var/db/postgres/data96</li>
                             <li>10 - /var/db/postgres/data10</li>
+                            <li>Pre-9.6 - /usr/local/pgsql/data</li>
                         </ul>
                         <li>Config files - Contained in data directory</li>
                         <li>Binaries - /usr/local/bin</li>
@@ -519,8 +520,8 @@ sudo service postgresql stop -m fast
                 <section data-background="css/theme/crunchy_white_bg.png">
                     <h2>Default users & access</h2>
                     <ul>
-                        <li>System User - pgsql (changed to "postgres" as of 9.6)</li>
-                        <li>Roles - pgsql (superuser) (changed to "postgres" in 9.6)</li>
+                        <li>System User - postgres (Pre-9.6 was pgsql) </li>
+                        <li>Roles - postgres (superuser) (Pre-9.6 was pgsql)</li>
                         <pre><code data-trim>
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust
